@@ -22,9 +22,9 @@ import utilities.xml.xmlMapper;
 public class BankThreeTranslator {
 
     private static final String BANKEXCHANGE_NAME = "cphbusiness.bankXML";
-    private static final String REPLY_QUEUE = "bank_three_normalizer";
-    private static final String EXCHANGE_NAME = "translator_exchange_topic";
-    private static final String QUEUE_NAME = "bank_three_translator";
+    private static final String REPLY_QUEUE = "bank_three_normalizer_gr1";
+    private static final String EXCHANGE_NAME = "ex_translators_gr1";
+    private static final String QUEUE_NAME = "bank_three_translator_gr1";
     private static final String[] TOPICS = {"cheap.*" , "expensive.*"};
 
     public static void main(String[] args) throws IOException, InterruptedException {
