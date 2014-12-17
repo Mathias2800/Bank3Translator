@@ -21,10 +21,9 @@ import utilities.xml.xmlMapper;
  */
 public class BankThreeTranslator {
 
-    private static final String BANKEXCHANGE_NAME = "cphbusiness.bankXML";
     private static final String REPLY_QUEUE = "bank_three_normalizer_gr1";
     private static final String EXCHANGE_NAME = "ex_translators_gr1";
-    private static final String QUEUE_NAME = "bank_three_translator_gr1";
+    private static final String QUEUE_NAME = "bank_three_gr1";
     private static final String[] TOPICS = {"cheap.*" , "expensive.*"};
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -47,7 +46,7 @@ public class BankThreeTranslator {
             String message = translateMessage(delivery);
             System.out.println(message);
             BasicProperties probs = new BasicProperties.Builder().replyTo(REPLY_QUEUE).correlationId("1").build();
-            channelOut.basicPublish(BANKEXCHANGE_NAME, "", probs, message.getBytes());
+            channelOut.basicPublish("", QUEUE_NAME, probs, message.getBytes());
         }
     }
 
