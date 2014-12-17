@@ -23,22 +23,24 @@ public class BankThreeTranslator {
 
     private static final String REPLY_QUEUE = "bank_three_normalizer_gr1";
     private static final String EXCHANGE_NAME = "ex_translators_gr1";
-    private static final String QUEUE_NAME = "bank_three_gr1";
+    private static final String INQUEUE_NAME = "Bank_three_translator_gr1";
+    private static final String OUTQUEUE_NAME ="bank_three_gr1";
     private static final String[] TOPICS = {"cheap.*" , "expensive.*"};
 
     public static void main(String[] args) throws IOException, InterruptedException {
         ConnectionCreator creator = ConnectionCreator.getInstance();
         Channel channelIn = creator.createChannel();
         Channel channelOut = creator.createChannel();
-        channelIn.queueDeclare(QUEUE_NAME, true, false, false, null);
+        channelIn.queueDeclare(INQUEUE_NAME, true, false, false, null);
+        channelOut.queueDeclare(OUTQUEUE_NAME, false, false, false, null);
         channelIn.exchangeDeclare(EXCHANGE_NAME, "topic");
 
         for (String topic : TOPICS) {
-            channelIn.queueBind(QUEUE_NAME, EXCHANGE_NAME, topic);
+            channelIn.queueBind(INQUEUE_NAME, EXCHANGE_NAME, topic);
         }
 
         QueueingConsumer consumer = new QueueingConsumer(channelIn);
-        channelIn.basicConsume(QUEUE_NAME, true, consumer);
+        channelIn.basicConsume(INQUEUE_NAME, true, consumer);
 
 
         while (true) {
@@ -46,7 +48,7 @@ public class BankThreeTranslator {
             String message = translateMessage(delivery);
             System.out.println(message);
             BasicProperties probs = new BasicProperties.Builder().replyTo(REPLY_QUEUE).correlationId("1").build();
-            channelOut.basicPublish("", QUEUE_NAME, probs, message.getBytes());
+            channelOut.basicPublish("", OUTQUEUE_NAME, probs, message.getBytes());
         }
     }
 
