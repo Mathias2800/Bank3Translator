@@ -43,8 +43,10 @@ public class BankThreeTranslator {
         channelIn.basicConsume(INQUEUE_NAME, true, consumer);
 
 
+        System.out.println("Translator for Bank Three is running");
         while (true) {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
+            System.out.println("Got message: " + new String(delivery.getBody()));
             String message = translateMessage(delivery);
             System.out.println(message);
             BasicProperties probs = new BasicProperties.Builder().replyTo(REPLY_QUEUE).correlationId("1").build();
