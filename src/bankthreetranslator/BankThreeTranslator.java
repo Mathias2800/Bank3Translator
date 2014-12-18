@@ -46,7 +46,6 @@ public class BankThreeTranslator {
         System.out.println("Translator for Bank Three is running");
         while (true) {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-            //channelIn.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             System.out.println("Got message: " + new String(delivery.getBody()));
             String message = translateMessage(delivery);
             System.out.println(message);
